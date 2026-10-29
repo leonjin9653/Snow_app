@@ -34,6 +34,7 @@ Leon is a first-year University of Waterloo student. He's comfortable with Pytho
 ## Engineering rules
 
 - Python tooling: `uv` for dependencies and virtual environments.
+- Frontend: React + Leaflet in **JavaScript** (not TypeScript), built with Vite.
 - One scraper adapter per resort in `backend/collectors/adapters/`. All adapters return the common `SnowReport` format.
 - Units: cm, °C, UTC timestamps. Missing values are `None`/`NULL`, never 0.
 - Never overwrite good data with a failed scrape. Log every attempt in `scrape_runs`.

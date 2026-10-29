@@ -20,7 +20,7 @@ Leon makes the design decisions in this project. Each entry records the options,
 **Decision:** Python + FastAPI.
 **Why:** Builds on existing Python skills; same language as the scrapers and future ML.
 
-### D2. Frontend ✅ React + Leaflet (Oct 29, 2026) · 🟡 JavaScript vs. TypeScript still open
+### D2. Frontend ✅ React + Leaflet, JavaScript (Oct 29, 2026)
 
 | Option | For | Against |
 |---|---|---|
@@ -30,8 +30,8 @@ Leon makes the design decisions in this project. Each entry records the options,
 
 Also decide: **JavaScript or TypeScript?** TypeScript catches mistakes earlier and is valued by employers, but adds setup.
 
-**Decision:** React + Leaflet. JavaScript vs. TypeScript: _
-**Why:** Industry standard with lots of examples; free maps with no API key.
+**Decision:** React + Leaflet, written in JavaScript.
+**Why:** Industry standard with lots of examples; free maps with no API key. JavaScript over TypeScript to keep the learning curve manageable on the November deadline; TypeScript can be adopted later.
 
 ### D3. Database ✅ PostgreSQL from day one (Oct 29, 2026)
 
@@ -110,6 +110,26 @@ Straight-line distance is free and instant. Driving time needs a routing service
 | D. Busyness index only | Count people and compare to that camera's usual count ("busier than a typical Saturday") | Easiest |
 
 A is the chosen approach, run on short clips as in C; B and D are fallbacks.
+
+### D10. Blue Mountain's JSON feed ✅ Use the feed directly for now (Oct 29, 2026)
+
+Blue Mountain's report is loaded from a third-party JSON feed (MTNPowder) using an access token embedded in its public page. The feed is the richest data source of all 12 resorts, but it isn't a published public API. See `data-audit.md`.
+
+| Option | For | Against |
+|---|---|---|
+| Use the feed directly | Clean, structured, cm + inches, many fields | Not an offered API; the token can change; terms unclear |
+| Render the page in a headless browser and read the visible numbers | Uses only what any visitor sees | Heavier (Playwright), slower, more fragile |
+| Ask Blue Mountain for permission | Removes the doubt | May take time or get no reply |
+
+**Decision:** Use the feed directly while the project is small. If the project grows (real traffic, or anything beyond a personal/portfolio project), ask Blue Mountain for permission or switch to reading the rendered page.
+**Why:** It's by far the cleanest and richest data source, and the project is non-commercial and low-volume for now.
+
+**Ground rules:**
+
+- Don't hard-code or commit the token. Read it from Blue Mountain's page at scrape time (it's in the page's own request), so a token change doesn't break the scraper and no credential lives in the repo.
+- Keep the request rate the same as every other resort (a few times a day).
+- Keep this logic inside the Blue Mountain adapter only, so swapping to another approach later touches one file.
+- Revisit this decision if the site's terms say otherwise, or if Blue Mountain asks.
 
 ### D9. Webcam terms of use 🟡
 

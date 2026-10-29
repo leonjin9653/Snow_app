@@ -13,9 +13,9 @@
 
 ## Phase 0: Foundations (Oct 29 – Nov 4)
 
-- [ ] Make the decisions marked "needed by Phase 0" in `DECISIONS.md`
-- [ ] Create the GitHub repo, add these docs, set up the folder structure
-- [ ] Finish the data audit for all 12 resorts (`docs/data-audit.md`)
+- [ ] Make the decisions marked "needed by Phase 0" in `DECISIONS.md` (D1–D3 done; D4 open)
+- [x] Create the GitHub repo, add these docs, set up the folder structure
+- [x] Data audit for all 12 resorts, off-season pass (`docs/data-audit.md`). Re-check in December.
 - [ ] Build the resort seed file: name, coordinates, URLs, hours, pricing link
 - [ ] Open-Meteo script: fetch weather for 3 resorts with Python
 
