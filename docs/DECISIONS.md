@@ -69,6 +69,16 @@ Scraping these is fragile, and they rarely change. **Recommendation:** enter the
 Storing forecasts lets you later measure how accurate forecasts were (a good analysis project). Fetching live is simpler.
 
 **Decision:** _
+### D10. SnowReport implementation ✅ Pydantic, lax mode (Nov 12, 2026)
+
+| Option | For | Against |
+|---|---|---|
+| **Pydantic BaseModel** | Same library FastAPI uses; checks types when a report is created; rejects timestamps without a timezone | Extra dependency |
+| Dataclass | Built in, nothing to install | Type hints aren't enforced |
+
+**Decision:** Pydantic in lax mode (converts "45" to 45). All sanity checks live in `validate.py`, none in the model.
+**Why:** _
+
 
 ---
 
