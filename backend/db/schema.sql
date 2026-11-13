@@ -55,3 +55,7 @@ CREATE TABLE weather_observations (
     wind_kmh          REAL,
     is_forecast       BOOLEAN NOT NULL
 );
+
+CREATE UNIQUE INDEX weather_obs_one_per_hour
+    ON weather_observations (resort_id, valid_at)
+    WHERE NOT is_forecast;

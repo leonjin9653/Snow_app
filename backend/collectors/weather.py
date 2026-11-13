@@ -16,7 +16,7 @@ class WeatherObservation(BaseModel):
     is_forecast: bool
 
 
-def fetch(latitude: float, longitude: float) -> dict:
+def fetch(latitude: float, longitude: float, past_hours: int, forecast_hours: int) -> dict:
     params = {
         "latitude": latitude,
         "longitude": longitude,
@@ -27,6 +27,8 @@ def fetch(latitude: float, longitude: float) -> dict:
         "temperature_unit": "celsius",
         "wind_speed_unit": "kmh",
         "precipitation_unit": "mm",
+        "past_hours": past_hours,
+        "forecast_hours": forecast_hours,
     }
     headers = {"User-Agent": "snow-app (student project; github.com/leonjin9653/snow_app)"}
     response = httpx.get(OPEN_METEO_URL, params=params, headers=headers, timeout=20)

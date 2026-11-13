@@ -47,3 +47,51 @@ def save_snow_report(conn, report: SnowReport, resort_id: int, scrape_run_id: in
             report.runs_open, report.runs_total, report.lifts_open, report.lifts_total,
         ),
     )
+
+def get_active_resorts(conn) -> list[tuple]:
+    return conn.execute(
+        "SELECT id, slug, latitude, longitude FROM resorts WHERE active ORDER BY slug"
+    ).fetchall()
+
+
+def save_observations(conn, observations, resort_id: int, fetched_at) -> None:
+    with conn.cursor() as cur:
+        cur.executemany(
+            """
+            INSERT INTO weather_observations (
+                resort_id, fetched_at, valid_at,
+                temperature_c, precipitation_mm, snowfall_cm, wind_kmh, is_forecast
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, false)
+            ON CONFLICT (resort_id, valid_at) WHERE NOT is_forecast
+            DO UPDATE SET
+                fetched_at       = EXCLUDED.fetched_at,
+                temperature_c    = EXCLUDED.temperature_c,
+                precipitation_mm = EXCLUDED.precipitation_mm,
+                snowfall_cm      = EXCLUDED.snowfall_cm,
+                wind_kmh         = EXCLUDED.wind_kmh
+            """,
+            [
+                (resort_id, fetched_at, o.valid_at,
+                 o.temperature_c, o.precipitation_mm, o.snowfall_cm, o.wind_kmh)
+                for o in observations
+            ],
+        )
+
+
+def save_forecasts(conn, forecasts, resort_id: int, fetched_at) -> None:
+    with conn.cursor() as cur:
+        cur.executemany(
+            """
+            INSERT INTO weather_observations (
+                resort_id, fetched_at, valid_at,
+                temperature_c, precipitation_mm, snowfall_cm, wind_kmh, is_forecast
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, true)
+            """,
+            [
+                (resort_id, fetched_at, o.valid_at,
+                 o.temperature_c, o.precipitation_mm, o.snowfall_cm, o.wind_kmh)
+                for o in forecasts
+            ],
+        )
