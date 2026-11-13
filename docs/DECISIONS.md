@@ -64,12 +64,13 @@ Scraping these is fragile, and they rarely change. **Recommendation:** enter the
 **Decision:** Enter manually each season in the resort seed file, with a link to the resort's pricing page.
 **Why:** Rarely changes and is formatted differently on every site, so scraping it would be fragile code for little benefit.
 
-### D6. Store forecasts, or fetch them live? 🟡
+### D6. Store forecasts, or fetch them live? ✅
 
 Storing forecasts lets you later measure how accurate forecasts were (a good analysis project). Fetching live is simpler.
 
-**Decision:** _
-### D10. SnowReport implementation ✅ Pydantic, lax mode (Nov 12, 2026)
+**Decision:** The decision is to have a hybrid approach. An hourly job stores the last 3 hours. A job every 6 hours stores a 72 hour snap shot. 
+**Why:** The site reads only from the DB so it fits the free tier for Postgres and it keeps forecast history so forcast accuracy can be measured later. The alternative being storing everything hourly would be like 1GB per year with a LOT of that just being duplicates of the same rows.
+### D11. SnowReport implementation ✅ Pydantic, lax mode (Nov 12, 2026)
 
 | Option | For | Against |
 |---|---|---|
@@ -77,7 +78,7 @@ Storing forecasts lets you later measure how accurate forecasts were (a good ana
 | Dataclass | Built in, nothing to install | Type hints aren't enforced |
 
 **Decision:** Pydantic in lax mode (converts "45" to 45). All sanity checks live in `validate.py`, none in the model.
-**Why:** _
+**Why:** Chosen in lax mode as the data scraped in itself is not in any particular complicated format such that methods must be done to transform or manipulate it in a complicated manner. Also having all sanity checks in validate.py is more straight forward and declutters the code.
 
 
 ---
