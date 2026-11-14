@@ -21,8 +21,6 @@ def fetch(latitude: float, longitude: float, past_hours: int, forecast_hours: in
         "latitude": latitude,
         "longitude": longitude,
         "hourly": ",".join(HOURLY_VARS),
-        "past_hours": 24,
-        "forecast_hours": 72,
         "timeformat": "unixtime",
         "temperature_unit": "celsius",
         "wind_speed_unit": "kmh",

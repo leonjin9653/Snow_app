@@ -78,7 +78,7 @@ Storing forecasts lets you later measure how accurate forecasts were (a good ana
 | Dataclass | Built in, nothing to install | Type hints aren't enforced |
 
 **Decision:** Pydantic in lax mode (converts "45" to 45). All sanity checks live in `validate.py`, none in the model.
-**Why:** Chosen in lax mode as the data scraped in itself is not in any particular complicated format such that methods must be done to transform or manipulate it in a complicated manner. Also having all sanity checks in validate.py is more straight forward and declutters the code.
+**Why:** BeautifulSoup scrapes data always gets wrapped with quotations so test comes out like "20". Lax mode auto converts that text into an integer 20. Strict mode would reject "20" and force every adapter to have its own int() calls to convert strings to integers.  Also having all sanity checks in validate.py is more straight forward and declutters the code.
 
 
 ---
